@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +6,22 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'parking-nearby';
+  @ViewChild('latLong') coords: ElementRef;
+
+  ngAfterViewInit() {
+    console.log(this.coords);
+  }
+
+  getLocation() {
+    console.log(this.coords)
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((location)=> {
+        this.coords.nativeElement.innerHTML = "Latitude: " + location.coords.latitude +
+        "<br>Longitude: " + location.coords.longitude;
+      });
+    } else {
+      this.coords.nativeElement.innerHTML = "Geolocation is not supported by this browser.";
+    }
+  }
+
 }
