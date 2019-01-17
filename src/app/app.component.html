@@ -1,5 +1,8 @@
 <h1>Get Your Location</h1>
 <button type="button" name="button" (click)="getLocation()">Click</button>
 <p #latLong></p>
+<agm-map [latitude]="lat" [longitude]="lng">
+  <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+</agm-map>
 
 <router-outlet></router-outlet>
