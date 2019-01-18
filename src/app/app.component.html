@@ -1,8 +1,8 @@
 <h1>The closest parking place to you:</h1>
 <p #latLong></p>
-<agm-map [latitude]="userLat" [longitude]="userLng">
+<agm-map [latitude]="userLat" [longitude]="userLng" [zoom]=10>
   <agm-marker [latitude]="userLat" [longitude]="userLng"></agm-marker>
-  <agm-marker [latitude]="parkingLat" [longitude]="parkingLng"></agm-marker>
+  <agm-marker [latitude]="parkingLat" [longitude]="parkingLng" [iconUrl]="parkingIcon"></agm-marker>
 </agm-map>
 
 <router-outlet></router-outlet>
