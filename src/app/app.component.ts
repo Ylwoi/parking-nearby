@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { Http } from '@angular/http';
 
 @Component({
   selector: 'app-root',
@@ -7,24 +8,43 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 })
 export class AppComponent {
   @ViewChild('latLong') coords: ElementRef;
-  lat: number;
-  lng: number;
+  userLat: number;
+  userLng: number;
+  parkingLat: number;
+  parkingLng: number;
+  apiRoot: string = "https://kozutnhptest.azurewebsites.net";
+  //parkingLocations: Object;
+
+  constructor(private http: Http) { }
 
   ngAfterViewInit() {
-    console.log(this.coords);
+    this.getUserLocation();
   }
 
-  getLocation() {
+  getUserLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((location)=> {
-        this.lat = location.coords.latitude;
-        this.lng = location.coords.longitude;
-        this.coords.nativeElement.innerHTML = "Latitude: " + this.lat +
-        "<br>Longitude: " + this.lng;
+        this.userLat = location.coords.latitude;
+        this.userLng = location.coords.longitude;
+        this.coords.nativeElement.innerHTML = "Your latitude: " + this.userLat +
+        "<br>Your longitude: " + this.userLng;
+        this.getParkingLocations();
       });
     } else {
       this.coords.nativeElement.innerHTML = "Geolocation is not supported by this browser.";
     }
   }
 
+  getParkingLocations() {
+    let url = `${this.apiRoot}/api/Map/GetParkingStations`;
+    this.http.get(url).subscribe(res => {
+      this.getNearestLocation(res.json())
+    });
+  }
+
+  getNearestLocation(parkingLocations: Object) {
+    console.log(parkingLocations)
+  }
+
 }
+//455
