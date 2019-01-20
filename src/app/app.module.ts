@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 
 import { AgmCoreModule } from '@agm/core';
 
+import { HttpService } from './services/http.service';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -19,7 +21,7 @@ import { AgmCoreModule } from '@agm/core';
     }),
     HttpModule
   ],
-  providers: [],
+  providers: [HttpService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
