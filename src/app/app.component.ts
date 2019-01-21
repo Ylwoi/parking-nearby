@@ -1,4 +1,4 @@
-import { OnInit, AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { OnInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { HttpService } from './services/http.service';
 
 import sortByDistance from 'sort-by-distance';
@@ -14,16 +14,15 @@ export class AppComponent {
   userLng: number;
   parkingLat: number;
   parkingLng: number;
+  parkingLocations: object;
+  redDotIcon: string = "https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi2.png";
   parkingIcon: string = "https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png";
+
 
   constructor(private httpService: HttpService) { }
 
   ngOnInit() {
     this.getUserLocation();
-  }
-
-  ngAfterViewInit() {
-    this.getParkingLocations();
   }
 
   getUserLocation(): void {
@@ -40,8 +39,13 @@ export class AppComponent {
 
   getParkingLocations(): void {
     this.httpService.getParkingStations()
-      .then(()=> this.getNearestLocation(this.httpService.results))
-      .catch((err)=> console.error(err))
+      .then(()=> this.parkingLocations = this.httpService.results)
+      .then(()=> this.getNearestLocation(this.parkingLocations))
+      .catch((err)=> {
+        if (!err.ok) {
+          this.coords.nativeElement.innerHTML += `<br><h4 style="color:red">${err.statusText} ${err.status}: can't get the parking station locations</h4>`
+        }
+      })
   }
 
   getNearestLocation(parkingLocations: object): void {
