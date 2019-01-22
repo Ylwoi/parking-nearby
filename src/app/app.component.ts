@@ -43,7 +43,11 @@ export class AppComponent {
       .then(()=> this.getNearestLocation(this.parkingLocations))
       .catch((err)=> {
         if (!err.ok) {
-          this.coords.nativeElement.innerHTML += `<br><h4 style="color:red">${err.statusText} ${err.status}: can't get the parking station locations</h4>`
+          console.error(err);
+          this.coords.nativeElement.innerHTML += `<br><h4 style="color:red">ERROR: ${err.statusText} ${err.status}: can't get the parking station locations</h4>`;
+        } else {
+          console.error(err);
+          this.coords.nativeElement.innerHTML += `<br><h4 style="color:orange">WARNING: ${err.statusText} ${err.status}: response data is an empty array. </h4>`;
         }
       })
   }

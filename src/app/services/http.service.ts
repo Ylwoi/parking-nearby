@@ -18,8 +18,13 @@ export class HttpService {
       this.http.get(url)
         .toPromise()
         .then(res => {
-          this.results = res.json();
-          resolve();
+          if (res.json().length == 0) {
+            //console.log(res.json());
+            reject(res);
+          } else {
+            this.results = res.json();
+            resolve();
+          }
         },
         msg => {
           reject(msg);
